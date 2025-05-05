@@ -27,3 +27,4 @@ Siia palun tee loetelu kõikidest asjadest mida sa tegid. Järjekord pole olulin
 * Andmebaasi loomine(feedback_page), tabeli loomine(feedback) veerud(id, added, name, email, message).
 * Andmebaasi info näitamine admin lehel ja tagasiside kustutamise funktsionaalsus.
 * Kontakt lehelt saadetava info lisamine andmebaasi ja csv faili sedasi, et f5 ei saadaks uuesti tagasisidet andmebaasi.
+* Session log in lisamine nii, et logib välja automaatselt pärast 5 minuti möödumist pärast sisse logimist.

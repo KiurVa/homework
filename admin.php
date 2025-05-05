@@ -1,7 +1,12 @@
 <?php
-if ($_COOKIE["admin_auth"] !== "true") {
-    header("Location: login.php");
-    exit;
+session_start();
+if (!isset($_SESSION["admin_logged_in"]) || $_SESSION["admin_logged_in"] !== true ||
+!isset($_SESSION["login_time"]) || time() - $_SESSION["login_time"] > 300
+) {
+session_unset();
+session_destroy();
+header("Location: login.php");
+exit;
 }
 if (isset($_GET['sid'], $_GET['delete'],) && 
     !empty($_GET['sid']) && 
