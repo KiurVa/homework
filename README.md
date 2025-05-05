@@ -24,6 +24,6 @@ sest õpetaja githubi ilma kutseta lisada ei saa, selle asemel peab olmea teie e
 # Tegija tegemised
 
 Siia palun tee loetelu kõikidest asjadest mida sa tegid. Järjekord pole oluline.
-* Tegevus
-* ...
-
+* Andmebaasi loomine(feedback_page), tabeli loomine(feedback) veerud(id, added, name, email, message).
+* Andmebaasi info näitamine admin lehel ja tagasiside kustutamise funktsionaalsus.
+* Kontakt lehelt saadetava info lisamine andmebaasi ja csv faili sedasi, et f5 ei saadaks uuesti tagasisidet andmebaasi.

@@ -3,18 +3,36 @@ if ($_COOKIE["admin_auth"] !== "true") {
     header("Location: login.php");
     exit;
 }
-
-// CSV lugemine
-$rows = [];
-if (file_exists("feedback.csv")) {
-    $lines = file("feedback.csv", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        $fields = explode(";", $line);
-        if (count($fields) >= 4) {
-            $rows[] = $fields;
-        }
+if (isset($_GET['sid'], $_GET['delete'],) && 
+    !empty($_GET['sid']) && 
+    is_numeric($_GET['sid']) && 
+    $_GET['delete'] === 'true')
+    {
+    $id = (int)$_GET['sid'];
+    $sql = "DELETE FROM feedback WHERE id=$id";
+    if ($db->dbQuery($sql)) {
+        echo "<div class='alert alert-success'>Kommentaar kustutatud!</div>";
+    } else {
+        echo "<div class='aler alert-danger'>Kommentaari ei saanud kustutada!</div>";
     }
 }
+
+$sql = "SELECT id, name, email, message, DATE_FORMAT(added, '%d.%m.%Y %H:%i:%s') as adding FROM feedback ORDER BY added DESC";
+$data = $db->dbGetArray($sql);
+//$db->show($data); //TEST!
+
+// CSV lugemine
+//
+//$rows = [];
+//if (file_exists("feedback.csv")) {
+    //$lines = file("feedback.csv", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    //foreach ($lines as $line) {
+        //$fields = explode(";", $line);
+        //if (count($fields) >= 4) {
+            //$rows[] = $fields;
+        //}
+    //}
+//}
 ?>
 <!DOCTYPE html>
 <html lang="et">
@@ -32,7 +50,7 @@ if (file_exists("feedback.csv")) {
             <a href="index.php" class="btn btn-outline-success me-1">Avaleht</a>
             <a href="logout.php" class="btn btn-outline-danger">Logi välja</a>
         </div>
-        <?php if (count($rows) > 0): ?>
+        <?php if ($data !== false): ?>
             <table class="table table-bordered table-striped">
                 <thead class="table-dark">
                     <tr>
@@ -40,16 +58,21 @@ if (file_exists("feedback.csv")) {
                         <th>Nimi</th>
                         <th>E-post</th>
                         <th>Sõnum</th>
+                        <th>Kustuta</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($rows as $r): ?>
+                    <?php for ($x = 0; $x < count($data); $x++) { ?>
                         <tr>
-                            <?php foreach ($r as $col): ?>
-                                <td><?= htmlspecialchars($col) ?></td>
-                            <?php endforeach; ?>
+                        <td><?= $data[$x]['adding']; ?></td>
+                        <td><?= $data[$x]['name']; ?></td>
+                        <td><?= $data[$x]['email']; ?></td>
+                        <td><?= $data[$x]['message']; ?></td>
+                        <td class="text-center">
+                                    <a href="?page=admin&sid=<?= $data[$x]['id'] ?>&delete=true" onclick="return confirm('Kas oled kindel, et soovid kustada?');" class="text-danger" title="Kustuta kommentaar">Kustuta</a>
+                                </td>
                         </tr>
-                    <?php endforeach; ?>
+                        <?php } ?>
                 </tbody>
             </table>
         <?php else: ?>

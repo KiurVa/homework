@@ -1,5 +1,7 @@
-
 <?php
+include("include/settings.php"); //Lae seaded
+include("include/mysqli.php"); //Lae andmebaasi klass
+$db = new Db(); // Loo andmebaasi objekt
 $page = $_GET['page'] ?? 'home';
 $allowed_pages = ['home', 'contact', 'admin', 'thanks'];
 if (!in_array($page, $allowed_pages)) {
